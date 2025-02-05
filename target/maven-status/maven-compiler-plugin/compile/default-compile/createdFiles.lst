@@ -1,0 +1,8 @@
+Service\Login.class
+modelBD\PrestamosBD.class
+Service\Clientes.class
+Service\Asesores.class
+modelBD\AsesoresBD.class
+modelBD\ClientesBD.class
+Service\HibernateUtil.class
+Service\Prestamos.class
