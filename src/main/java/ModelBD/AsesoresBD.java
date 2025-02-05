@@ -23,15 +23,14 @@ public class AsesoresBD {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
-    private String apellido;
-    private String correo;
+    private String prmer_nombre;
+    private String segundo_nombre;
+    private String apellido_paterno;
+    private String apellido_materno;
     private int telefono;
-    private String direccion;
-    private Date fecha_contratacion;
+    private String correo;
     private boolean activo;
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -40,28 +39,36 @@ public class AsesoresBD {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getPrmer_nombre() {
+        return prmer_nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPrmer_nombre(String prmer_nombre) {
+        this.prmer_nombre = prmer_nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getSegundo_nombre() {
+        return segundo_nombre;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setSegundo_nombre(String segundo_nombre) {
+        this.segundo_nombre = segundo_nombre;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getApellido_paterno() {
+        return apellido_paterno;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setApellido_paterno(String apellido_paterno) {
+        this.apellido_paterno = apellido_paterno;
+    }
+
+    public String getApellido_materno() {
+        return apellido_materno;
+    }
+
+    public void setApellido_materno(String apellido_materno) {
+        this.apellido_materno = apellido_materno;
     }
 
     public int getTelefono() {
@@ -72,20 +79,12 @@ public class AsesoresBD {
         this.telefono = telefono;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public Date getFecha_contratacion() {
-        return fecha_contratacion;
-    }
-
-    public void setFecha_contratacion(Date fecha_contratacion) {
-        this.fecha_contratacion = fecha_contratacion;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public boolean isActivo() {
@@ -96,3 +95,4 @@ public class AsesoresBD {
         this.activo = activo;
     }
 }
+  

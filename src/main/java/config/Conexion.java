@@ -8,18 +8,18 @@ public class Conexion {
     private Connection con;
     private static final String URL = "jdbc:mysql://localhost:3306/prestamos?useSSL=false&serverTimezone=UTC";
     private static final String USUARIO = "root";
-    private static final String CONTRASEÑA = "root";
+    private static final String CONTRASEÃ‘A = "root";
 
     public Conexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
+            con = DriverManager.getConnection(URL, USUARIO, CONTRASEÃ‘A);
             System.out.println("âœ… ConexiÃ³n exitosa a la base de datos.");
         } catch (ClassNotFoundException e) {
-            System.err.println("â?Œ Error: No se encontrÃ³ el driver JDBC.");
+            System.err.println("ï¿½?ï¿½ Error: No se encontrÃ³ el driver JDBC.");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.err.println("â?Œ Error al conectar a la base de datos.");
+            System.err.println("ï¿½?ï¿½ Error al conectar a la base de datos.");
             e.printStackTrace();
         }
     }
@@ -35,7 +35,7 @@ public class Conexion {
                 System.out.println("âœ… ConexiÃ³n cerrada correctamente.");
             }
         } catch (SQLException e) {
-            System.err.println("â?Œ Error al cerrar la conexiÃ³n.");
+            System.err.println("ï¿½?ï¿½ Error al cerrar la conexiÃ³n.");
             e.printStackTrace();
         }
     }
