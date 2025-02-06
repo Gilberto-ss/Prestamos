@@ -14,7 +14,7 @@ public class PrestamosBD {
     private Long id_cliente;
     private Long id_asesor; // Asesor responsable del pr�stamo y del cobro
     private double monto_prestado;
-    private float taza_interes;
+    private float tasa_interes;
     private int plazo;
     private double monto_restante;
     private double abono;
@@ -53,12 +53,12 @@ public class PrestamosBD {
         this.monto_prestado = monto_prestado;
     }
 
-    public float getTaza_interes() {
-        return taza_interes;
+    public float getTasa_interes() {
+        return tasa_interes;
     }
 
-    public void setTaza_interes(float taza_interes) {
-        this.taza_interes = taza_interes;
+    public void setTasa_interes(float tasa_interes) {
+        this.tasa_interes = tasa_interes;
     }
 
     public int getPlazo() {

@@ -30,37 +30,42 @@ public class Asesores {
     @Path("guardar")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response guardar(@FormParam("nombre") String nombre,
-                            @FormParam("apellido") String apellido,
-                            @FormParam("correo") String correo,
+    public Response guardar(@FormParam("primer_nombre") String primer_nombre,
+                            @FormParam("segundo_nombre") String segundo_nombre,
+                            @FormParam("apellido_paterno") String apellido_paterno,
+                            @FormParam("apellido_materno") String apellido_materno,                       
                             @FormParam("telefono") int telefono,
-                            @FormParam("direccion") String direccion,
-                            @FormParam("fecha_contratacion") String fecha_contratacion,
+                            @FormParam("correo") String correo,
                             @FormParam("activo") int activo) {
 
-        if (nombre == null || nombre.trim().isEmpty()) {
+        if (primer_nombre == null || primer_nombre.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"El nombre es obligatorio.\"}")
                     .build();
         }
-        if (apellido == null || apellido.trim().isEmpty()) {
+        if (segundo_nombre == null || segundo_nombre.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"El nombre es obligatorio.\"}")
+                    .build();
+        }
+        if (apellido_paterno == null || apellido_paterno.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"El apellido es obligatorio.\"}")
+                    .build();
+        }
+        if (apellido_materno == null || apellido_materno.trim().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"El apellido es obligatorio.\"}")
+                    .build();
+        }
+        if (telefono <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"El telï¿½fono es obligatorio.\"}")
                     .build();
         }
         if (correo == null || correo.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("{\"error\":\"El correo es obligatorio.\"}")
-                    .build();
-        }
-        if (telefono <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El teléfono es obligatorio.\"}")
-                    .build();
-        }
-        if (direccion == null || direccion.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La dirección es obligatoria.\"}")
                     .build();
         }
         if (activo <= 0) {
@@ -73,19 +78,16 @@ public class Asesores {
         Transaction transaction = null;
 
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaContratacionParsed = dateFormat.parse(fecha_contratacion);
-
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
 
             AsesoresBD asesor = new AsesoresBD();
-            asesor.setNombre(nombre);
-            asesor.setApellido(apellido);
-            asesor.setCorreo(correo);
+            asesor.setPrimer_nombre(primer_nombre);
+            asesor.setSegundo_nombre(segundo_nombre);
+            asesor.setApellido_paterno(apellido_paterno);
+            asesor.setApellido_materno(apellido_materno);
             asesor.setTelefono(telefono);
-            asesor.setDireccion(direccion);
-            asesor.setFecha_contratacion(fechaContratacionParsed);
+            asesor.setCorreo(correo);
             asesor.setActivo(activo == 1);
 
             session.save(asesor);

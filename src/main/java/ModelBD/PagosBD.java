@@ -10,6 +10,7 @@ public class PagosBD {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private Long id_prestamo;
     private Long id_asesor;
     private Long id_cliente;

@@ -57,7 +57,7 @@ public class Clientes {
         }
         if (apellido_materno == null || apellido_materno.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La fecha de nacimiento es obligatoria.\"}")
+                    .entity("{\"error\":\"El apellido es obligatorio.\"}")
                     .build();
         }
         if (correo == null || correo.trim().isEmpty()) {
@@ -67,12 +67,12 @@ public class Clientes {
         }
         if (telefono == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El teléfono es obligatorio.\"}")
+                    .entity("{\"error\":\"El telï¿½fono es obligatorio.\"}")
                     .build();
         }
         if (direccion == null || direccion.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La dirección es obligatoria.\"}")
+                    .entity("{\"error\":\"La direcciï¿½n es obligatoria.\"}")
                     .build();
         }
         if (activo != 1) {
@@ -223,7 +223,7 @@ public class Clientes {
         }
         if (apellido_materno == null || apellido_materno.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La fecha de nacimiento es obligatoria.\"}")
+                    .entity("{\"error\":\"El apellido es obligatorio.\"}")
                     .build();
         }
         if (correo == null || correo.trim().isEmpty()) {
@@ -233,12 +233,12 @@ public class Clientes {
         }
         if (telefono == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El teléfono es obligatorio.\"}")
+                    .entity("{\"error\":\"El telï¿½fono es obligatorio.\"}")
                     .build();
         }
         if (direccion == null || direccion.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La dirección es obligatoria.\"}")
+                    .entity("{\"error\":\"La direcciï¿½n es obligatoria.\"}")
                     .build();
         }
         if (activo != 1) {

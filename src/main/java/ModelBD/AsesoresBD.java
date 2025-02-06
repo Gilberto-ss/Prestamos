@@ -23,7 +23,7 @@ public class AsesoresBD {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String prmer_nombre;
+    private String primer_nombre;
     private String segundo_nombre;
     private String apellido_paterno;
     private String apellido_materno;
@@ -39,12 +39,12 @@ public class AsesoresBD {
         this.id = id;
     }
 
-    public String getPrmer_nombre() {
-        return prmer_nombre;
+    public String getPrimer_nombre() {
+        return primer_nombre;
     }
 
-    public void setPrmer_nombre(String prmer_nombre) {
-        this.prmer_nombre = prmer_nombre;
+    public void setPrimer_nombre(String primer_nombre) {
+        this.primer_nombre = primer_nombre;
     }
 
     public String getSegundo_nombre() {
