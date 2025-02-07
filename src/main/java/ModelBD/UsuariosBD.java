@@ -28,8 +28,8 @@ public class UsuariosBD {
     @Column(name = "nombre_usuario", nullable = false)
     private String nombre_usuario;
 
-    @Column(name = "contraseña", nullable = false)
-    private String contraseña;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "rol", nullable = false)
     private String rol;
@@ -51,8 +51,8 @@ public class UsuariosBD {
     public String getNombre_usuario() { return nombre_usuario; }
     public void setNombre_usuario(String nombre_usuario) { this.nombre_usuario = nombre_usuario; }
 
-    public String getContraseña() { return contraseña; }
-    public void setContraseña(String contraseña) { this.contraseña = contraseña; }
+    public String getpassword() { return password; }
+    public void setpassword(String password) { this.password = password; }
 
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }

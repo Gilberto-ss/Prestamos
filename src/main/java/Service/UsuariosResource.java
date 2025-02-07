@@ -31,7 +31,7 @@ public class UsuariosResource {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response guardar(@FormParam("nombre_usuario") String nombre_usuario,
-                            @FormParam("contraseña") String contraseña,
+                            @FormParam("password") String password,
                             @FormParam("rol") String rol,
                             @FormParam("correo") String correo,
                             @FormParam("activo") int activo) {
@@ -41,9 +41,9 @@ public class UsuariosResource {
                     .entity("{\"error\":\"nombre_usuario es obligatorio.\"}")
                     .build();
         }
-        if (contraseña == null || contraseña.trim().isEmpty()) {
+        if (password == null || password.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"contraseña es obligatoria.\"}")
+                    .entity("{\"error\":\"password es obligatoria.\"}")
                     .build();
         }
         if (rol == null || rol.trim().isEmpty()) {
@@ -71,7 +71,7 @@ public class UsuariosResource {
 
             UsuariosBD usuario = new UsuariosBD();
             usuario.setNombre_usuario(nombre_usuario);
-            usuario.setContraseña(contraseña);
+            usuario.setpassword(password);
             usuario.setRol(rol);
             usuario.setCorreo(correo);
             usuario.setFecha_creacion(new Date());
