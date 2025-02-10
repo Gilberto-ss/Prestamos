@@ -40,28 +40,28 @@ private static SessionFactory sessionFactory;
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
     public Response autenticar(@FormParam("nombre_usuario") String nombre_usuario,
-                               @FormParam("contraseña") String contraseña) {
+                               @FormParam("password") String password) {
         Session session = null;
 
         if (nombre_usuario == null || nombre_usuario.trim().isEmpty() ||
-            contraseña == null || contraseña.trim().isEmpty()) {
+            password == null || password.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                           .entity("{\"error\":\"Nombre de usuario y contraseña son obligatorios.\"}")
+                           .entity("{\"error\":\"Nombre de usuario y contraseï¿½a son obligatorios.\"}")
                            .build();
         }
 
         try {
             session = sessionFactory.openSession();
             
-            String hql = "FROM UsuariosBD u WHERE u.nombre_usuario = :nombre AND u.contraseña = :contraseña AND u.activo =1";
+            String hql = "FROM UsuariosBD u WHERE u.nombre_usuario = :nombre AND u.contraseï¿½a = :contraseï¿½a AND u.activo =1";
             UsuariosBD usuario = (UsuariosBD) session.createQuery(hql)
                                                      .setParameter("nombre", nombre_usuario)
-                                                     .setParameter("contraseña", contraseña)
+                                                     .setParameter("password", password)
                                                      .uniqueResult();
 
             if (usuario == null) {
                 return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity("{\"error\":\"Usuario o contraseña incorrectos.\"}")
+                               .entity("{\"error\":\"Usuario o contraseï¿½a incorrectos.\"}")
                                .build();
             }
 
