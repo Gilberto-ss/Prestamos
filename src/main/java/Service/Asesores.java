@@ -60,7 +60,7 @@ public class Asesores {
         }
         if (telefono <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El tel�fono es obligatorio.\"}")
+                    .entity("{\"error\":\"El telefono es obligatorio.\"}")
                     .build();
         }
         if (correo == null || correo.trim().isEmpty()) {
