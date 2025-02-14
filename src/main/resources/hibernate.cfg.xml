@@ -24,12 +24,11 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
 
-        <mapping class="Service.Clientes"/>
-        <mapping class="Service.Login"/>
-        <mapping class="Service.Pagos"/>
-        <mapping class="Service.Prestamos"/>
-        <mapping class="Service.UsuariosResource"/> 
-        <mapping class="modelBD.AsesoresBD"/>
+        <mapping class="ModelBD.ClientesBD"/>
+        <mapping class="ModelBD.PagosBD"/>
+        <mapping class="ModelBD.PrestamosBD"/>
+        <mapping class="ModelBD.UsuariosBD"/>
+        <mapping class="ModelBD.AsesoresBD"/>
 
             
     </session-factory>

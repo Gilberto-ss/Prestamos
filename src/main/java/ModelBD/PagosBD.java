@@ -1,4 +1,4 @@
-package modelBD;
+package ModelBD;
 
 import javax.persistence.*;
 import java.util.Date;

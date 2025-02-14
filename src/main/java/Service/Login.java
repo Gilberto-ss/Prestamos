@@ -46,14 +46,14 @@ private static SessionFactory sessionFactory;
         if (nombre_usuario == null || nombre_usuario.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                           .entity("{\"error\":\"Nombre de usuario y contrase�a son obligatorios.\"}")
+                           .entity("{\"error\":\"Nombre de usuario y password son obligatorios.\"}")
                            .build();
         }
 
         try {
             session = sessionFactory.openSession();
             
-            String hql = "FROM UsuariosBD u WHERE u.nombre_usuario = :nombre AND u.contrase�a = :contrase�a AND u.activo =1";
+            String hql = "FROM UsuariosBD u WHERE u.nombre_usuario = :nombre AND u.password = :password AND u.activo =1";
             UsuariosBD usuario = (UsuariosBD) session.createQuery(hql)
                                                      .setParameter("nombre", nombre_usuario)
                                                      .setParameter("password", password)
@@ -61,7 +61,7 @@ private static SessionFactory sessionFactory;
 
             if (usuario == null) {
                 return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity("{\"error\":\"Usuario o contrase�a incorrectos.\"}")
+                               .entity("{\"error\":\"Usuario o password incorrectos.\"}")
                                .build();
             }
 

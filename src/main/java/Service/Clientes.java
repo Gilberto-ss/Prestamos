@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import modelBD.ClientesBD;
+import ModelBD.ClientesBD;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -67,12 +67,12 @@ public class Clientes {
         }
         if (telefono == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El tel�fono es obligatorio.\"}")
+                    .entity("{\"error\":\"El telefono es obligatorio.\"}")
                     .build();
         }
         if (direccion == null || direccion.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La direcci�n es obligatoria.\"}")
+                    .entity("{\"error\":\"La direccion es obligatoria.\"}")
                     .build();
         }
         if (activo != 1) {
@@ -85,7 +85,7 @@ public class Clientes {
         Transaction transaction = null;
 
         try {
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
          Date fechaNacimientoParsed = dateFormat.parse(fecha_nacimiento);
 
             session = sessionFactory.openSession();
@@ -192,7 +192,7 @@ public class Clientes {
         Transaction transaction = null;
 
         try {
-         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
          Date fechaNacimientoParsed = dateFormat.parse(fecha_nacimiento);
 
             session = sessionFactory.openSession();
@@ -233,12 +233,12 @@ public class Clientes {
         }
         if (telefono == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El tel�fono es obligatorio.\"}")
+                    .entity("{\"error\":\"El telefono es obligatorio.\"}")
                     .build();
         }
         if (direccion == null || direccion.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"La direcci�n es obligatoria.\"}")
+                    .entity("{\"error\":\"La direccion es obligatoria.\"}")
                     .build();
         }
         if (activo != 1) {

@@ -1,6 +1,7 @@
 package Service;
 
 import ModelBD.UsuariosBD;
+import ModelBD.UsuariosBD.Rol;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.Consumes;
@@ -30,72 +31,103 @@ public class UsuariosResource {
     @Path("guardar")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response guardar(@FormParam("nombre_usuario") String nombre_usuario,
-                            @FormParam("password") String password,
-                            @FormParam("rol") String rol,
-                            @FormParam("correo") String correo,
-                            @FormParam("activo") int activo) {
-        
-        if (nombre_usuario == null || nombre_usuario.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"nombre_usuario es obligatorio.\"}")
-                    .build();
+    public Response guardar(@FormParam("nombre_usuario") String nombreUsuario,
+                        @FormParam("password") String password,
+                        @FormParam("primer_nombre") String primerNombre,
+                        @FormParam("segundo_nombre") String segundoNombre,
+                        @FormParam("apellido_paterno") String apellidoPaterno,
+                        @FormParam("apellido_materno") String apellidoMaterno,
+                        @FormParam("correo") String correo,
+                        @FormParam("telefono") String telefono,
+                        @FormParam("rol") String rol,
+                        @FormParam("activo") int activo) {
+
+    // Validaciones básicas
+    if (nombreUsuario == null || nombreUsuario.trim().isEmpty()) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El nombre de usuario es obligatorio.\"}")
+                .build();
+    }
+    if (password == null || password.trim().isEmpty()) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"La contraseña es obligatoria.\"}")
+                .build();
+    }
+    if (primerNombre == null || primerNombre.trim().isEmpty()) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El primer nombre es obligatorio.\"}")
+                .build();
+    }
+    if (apellidoPaterno == null || apellidoPaterno.trim().isEmpty()) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El apellido paterno es obligatorio.\"}")
+                .build();
+    }
+    if (correo == null || correo.trim().isEmpty() ) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El correo es obligatorio y no debe superar los 100 caracteres.\"}")
+                .build();
+    }
+    if (telefono != null && telefono.length() > 15) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El teléfono no debe superar los 15 caracteres.\"}")
+                .build();
+    }
+    if (rol == null || rol.trim().isEmpty()) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El rol es obligatorio.\"}")
+                .build();
+    }
+    if (!(rol.equalsIgnoreCase("ADMIN") || rol.equalsIgnoreCase("ASESOR") || rol.equalsIgnoreCase("USUARIO"))) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"Rol no válido. Debe ser ADMIN, ASESOR o USUARIO.\"}")
+                .build();
+    }
+    if (activo <= 0) {
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity("{\"error\":\"El campo 'activo' debe ser mayor a 0.\"}")
+                .build();
+    }
+
+    Session session = null;
+    Transaction transaction = null;
+
+    try {
+        session = sessionFactory.openSession();
+        transaction = session.beginTransaction();
+
+        UsuariosBD usuario = new UsuariosBD();
+        usuario.setNombreUsuario(nombreUsuario);
+        usuario.setPassword(password);
+        usuario.setPrimerNombre(primerNombre);
+        usuario.setSegundoNombre(segundoNombre);
+        usuario.setApellidoPaterno(apellidoPaterno);
+        usuario.setApellidoMaterno(apellidoMaterno);
+        usuario.setCorreo(correo);
+        usuario.setTelefono(telefono);
+        usuario.setRol(Rol.valueOf(rol.toUpperCase())); 
+        usuario.setFechaCreacion(new Date());
+        usuario.setActivo(activo == 1); 
+
+        session.save(usuario);
+        transaction.commit();
+
+        return Response.ok("{\"message\":\"Usuario guardado exitosamente.\"}").build();
+
+    } catch (Exception e) {
+        if (transaction != null) {
+            transaction.rollback();
         }
-        if (password == null || password.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"password es obligatoria.\"}")
-                    .build();
-        }
-        if (rol == null || rol.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"rol es obligatorio.\"}")
-                    .build();
-        }
-        if (correo == null || correo.trim().isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"correo es obligatorio.\"}")
-                    .build();
-        }
-        if (activo != 1) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"El campo 'activo' debe ser 1.\"}")
-                    .build();
-        }
-
-        Session session = null;
-        Transaction transaction = null;
-
-        try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-
-            UsuariosBD usuario = new UsuariosBD();
-            usuario.setNombre_usuario(nombre_usuario);
-            usuario.setpassword(password);
-            usuario.setRol(rol);
-            usuario.setCorreo(correo);
-            usuario.setFecha_creacion(new Date());
-            usuario.setActivo(true);
-
-            session.save(usuario);
-            transaction.commit();
-
-            return Response.ok("{\"message\":\"Usuario guardado exitosamente\"}").build();
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("{\"error\":\"Error al guardar el usuario: " + e.getMessage() + "\"}")
-                    .build();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+        e.printStackTrace();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("{\"error\":\"Error al guardar el usuario: " + e.getMessage() + "\"}")
+                .build();
+    } finally {
+        if (session != null) {
+            session.close();
         }
     }
+}
 
     @GET
     @Path("eliminar")
