@@ -14,7 +14,9 @@ public class PagosBD {
     private Long id_prestamo;
     private Long id_asesor;
     private Long id_cliente;
+    private double cuota;
     private double abono;
+    private double monto_restante;
     private Date fecha_pago;
     private boolean activo;
 
@@ -50,12 +52,28 @@ public class PagosBD {
         this.id_cliente = id_cliente;
     }
 
+    public double getCuota() {
+        return cuota;
+    }
+
+    public void setCuota(double cuota) {
+        this.cuota = cuota;
+    }
+
     public double getAbono() {
         return abono;
     }
 
     public void setAbono(double abono) {
         this.abono = abono;
+    }
+
+    public double getMonto_restante() {
+        return monto_restante;
+    }
+
+    public void setMonto_restante(double monto_restante) {
+        this.monto_restante = monto_restante;
     }
 
     public Date getFecha_pago() {
