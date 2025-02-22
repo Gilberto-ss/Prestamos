@@ -16,6 +16,7 @@ public class PrestamosBD {
     private double monto_prestado;
     private int tasa_interes;
     private int plazo;
+    private double monto_faltante;
     private Date fecha_prestamo;
     private boolean activo;
 
@@ -67,6 +68,14 @@ public class PrestamosBD {
         this.plazo = plazo;
     }
 
+    public double getMonto_faltante() {
+        return monto_faltante;
+    }
+
+    public void setMonto_faltante(double monto_faltante) {
+        this.monto_faltante = monto_faltante;
+    }
+
     public Date getFecha_prestamo() {
         return fecha_prestamo;
     }
@@ -83,5 +92,5 @@ public class PrestamosBD {
         this.activo = activo;
     }
 
-   
+  
 }

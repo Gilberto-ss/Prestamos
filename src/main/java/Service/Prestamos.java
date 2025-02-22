@@ -59,13 +59,14 @@ public class Prestamos {
 
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-
+            
             PrestamosBD prestamo = new PrestamosBD();
             prestamo.setId_cliente(id_cliente);
             prestamo.setId_asesor(id_asesor);
             prestamo.setMonto_prestado(monto_prestado);
             prestamo.setTasa_interes(tasa_interes);
             prestamo.setPlazo(plazo);
+            prestamo.setMonto_faltante(monto_prestado);
             prestamo.setFecha_prestamo(new Date());
             prestamo.setActivo(true);
 

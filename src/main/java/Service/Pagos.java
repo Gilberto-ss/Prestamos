@@ -17,83 +17,90 @@ import org.hibernate.cfg.Configuration;
 
 @Path("Pagos")
 public class Pagos {
+    
     private static final SessionFactory sessionFactory;
 
     static {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
-
+    
     @POST
-@Path("guardar")
-@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-@Produces(MediaType.APPLICATION_JSON)
-public Response guardar(@FormParam("id_prestamo") Long id_prestamo,
-                        @FormParam("id_asesor") Long id_asesor,
-                        @FormParam("id_cliente") Long id_cliente) {
+    @Path("guardar")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response guardar(@FormParam("id_prestamo") Long id_prestamo,
+                            @FormParam("id_asesor") Long id_asesor,
+                            @FormParam("id_cliente") Long id_cliente) {
 
-    if (id_prestamo == null || id_prestamo <= 0) {
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity("{\"error\":\"El campo 'id_prestamo' es obligatorio y debe ser mayor a cero.\"}")
-                .build();
-    }
-    if (id_asesor == null || id_asesor <= 0) {
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity("{\"error\":\"El campo 'id_asesor' es obligatorio y debe ser mayor a cero.\"}")
-                .build();
-    }
-    if (id_cliente == null || id_cliente <= 0) {
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity("{\"error\":\"El campo 'id_cliente' es obligatorio y debe ser mayor a cero.\"}")
-                .build();
-    }
-
-    Transaction transaction = null;
-
-    try (Session session = sessionFactory.openSession()) {
-        transaction = session.beginTransaction();
-
-        PrestamosBD prestamo = session.get(PrestamosBD.class, id_prestamo);
-        if (prestamo == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\":\"No se encontró el préstamo con ID " + id_prestamo + ".\"}")
+        if (id_prestamo == null || id_prestamo <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"El campo 'id_prestamo' es obligatorio y debe ser mayor a cero.\"}")
                     .build();
         }
 
-        double tasa_interes = prestamo.getTasa_interes(); 
-        double monto_prestamo = prestamo.getMonto_prestado(); 
-        int plazo = prestamo.getPlazo(); 
+Session session = sessionFactory.openSession();
+Transaction transaction = null;
 
-        double tasa_mensual = (tasa_interes / 12) / 100; 
+try {
+    transaction = session.beginTransaction();
 
-        
-        double cuota = (monto_prestamo * (tasa_mensual * Math.pow(1 + tasa_mensual, plazo))) / 
-                       (Math.pow(1 + tasa_mensual, plazo) - 1);
-
-        cuota = Math.round(cuota * 100.0) / 100.0; // Redondear a 2 decimales
-
-        PagosBD pagos = new PagosBD();
-        pagos.setId_prestamo(id_prestamo);
-        pagos.setId_asesor(id_asesor);
-        pagos.setId_cliente(id_cliente);
-        pagos.setCuota(cuota); 
-        pagos.setMonto_restante(prestamo.getMonto_prestado());
-        pagos.setFecha_pago(new Date());
-        pagos.setActivo(true);
-
-        session.save(pagos);
-        transaction.commit();
-
-        return Response.ok("{\"message\":\"El pago se ha guardado correctamente.\", \"cuota\": " + cuota + "}").build();
-    } catch (Exception e) {
-        if (transaction != null) {
-            transaction.rollback();
-        }
-        e.printStackTrace();
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity("{\"error\":\"No se logró guardar el pago: " + e.getMessage() + "\"}")
+    PrestamosBD prestamo = session.get(PrestamosBD.class, id_prestamo);
+    if (prestamo == null) {
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("{\"error\":\"No se encontró el préstamo con ID " + id_prestamo + ".\"}")
                 .build();
     }
+
+    // Calcular la cuota mensual
+    double tasa_interes = prestamo.getTasa_interes();
+    double monto_prestamo = prestamo.getMonto_prestado();
+    int plazo = prestamo.getPlazo();
+
+    double tasa_mensual = (tasa_interes / 12) / 100;
+    double cuota = (monto_prestamo * (tasa_mensual * Math.pow(1 + tasa_mensual, plazo))) /
+                   (Math.pow(1 + tasa_mensual, plazo) - 1);
+
+    cuota = Math.round(cuota * 100.0) / 100.0; // Redondear a 2 decimales
+
+    // Calcular el nuevo monto restante
+    double nuevoMontoRestante = prestamo.getMonto_faltante() - cuota;
+    if (nuevoMontoRestante < 0) {
+        nuevoMontoRestante = 0; 
+    }
+
+    PagosBD pagos = new PagosBD();
+    pagos.setId_prestamo(id_prestamo);
+    pagos.setId_asesor(id_asesor);
+    pagos.setId_cliente(id_cliente);
+    pagos.setCuota(cuota);
+    pagos.setAbono(0.0);
+    pagos.setMonto_restante(nuevoMontoRestante);
+    pagos.setFecha_pago(new Date());
+    pagos.setActivo(true);
+
+    session.save(pagos);
+
+    // Actualizar el monto faltante en el préstamo
+    prestamo.setMonto_faltante(nuevoMontoRestante);
+    session.update(prestamo);
+
+    transaction.commit();
+    
+    return Response.ok("{\"message\":\"El pago se ha guardado correctamente.\", \"cuota\": " + cuota + ", \"monto_restante\": " + nuevoMontoRestante + "}").build();
+    
+} catch (Exception e) {
+    if (transaction != null) {
+        transaction.rollback();
+    }
+    e.printStackTrace();
+    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+            .entity("{\"error\":\"No se logró guardar el pago: " + e.getMessage() + "\"}")
+            .build();
+} finally {
+    session.close();  
 }
+    }
+
     @POST
 @Path("abonar")
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
