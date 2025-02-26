@@ -1,23 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ModelBD;
 
-import java.util.Date;
 import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
-import java.util.Date;
-/**
- *
- * @author LENOVO
- */
+
 @Entity
 @Table(name = "usuarios")
 public class UsuariosBD {
@@ -62,7 +48,8 @@ public class UsuariosBD {
     @Column(name = "activo")
     private boolean activo;
 
-    
+    // Getters y Setters
+
     public Long getId() {
         return id;
     }
@@ -158,8 +145,10 @@ public class UsuariosBD {
     public void setActivo(boolean activo) {
         this.activo = activo;
     }
+
+    // Enum para el rol
     public enum Rol {
-    ADMIN, ASESOR, USUARIO
+        admin, asesor, usuario
+    }
 }
 
-}
