@@ -148,7 +148,9 @@ public class UsuariosBD {
 
     // Enum para el rol
     public enum Rol {
-        admin, asesor, usuario
-    }
+    ADMIN,
+    ASESOR,
+    USUARIO;
+}
 }
 
